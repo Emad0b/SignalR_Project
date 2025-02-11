@@ -67,11 +67,11 @@ app.controller("ChatController", function ($scope, $http) {
     });
 
     $scope.messages = [];
-    $scope.userName = "User1";
+    $scope.userName = ''; // Should be set based on login session
     $scope.message = "";
 
     // Fetch messages from API
-    $http.get("/api/chat/messages").then(function (response) {
+    $http.get("/Chat/GetMessages").then(function (response) {
         if (response.data.success) {
             $scope.messages = response.data.data;
         }
@@ -81,16 +81,17 @@ app.controller("ChatController", function ($scope, $http) {
         if ($scope.message.trim() === "") return;
 
         var messageData = {
-            content: $scope.message,
-            senderId: 'fd0ae5a1-5540-445f-864a-2db9c3f47162' // Replace with actual sender ID from login session
+            senderId: $scope.userName, // Ensure this is the actual sender ID from session
+            content: $scope.message
         };
 
         // Send message to API
-        $http.post("/api/chat/send", messageData).then(function (response) {
-            if (response.data.success) {
-                console.log("Message sent:", response.data.message);
-            }
-        });
+        $http.post('/Chat/SendMessage', messageData)
+            .then(function (response) {
+                if (response.data.success) {
+                    console.log("Message sent:", response.data.message);
+                }
+            });
 
         // SignalR real-time send
         connection.invoke("SendMessage", $scope.userName, $scope.message)
@@ -101,9 +102,17 @@ app.controller("ChatController", function ($scope, $http) {
         $scope.message = "";
     };
 
+    // Fix for receiving messages
     connection.on("ReceiveMessage", function (user, message) {
+        console.log("Received message from:", user, "Message:", message);
+        console.log("Type of user:", typeof user, "Value:", user);
+
         $scope.$apply(function () {
-            $scope.messages.push({ sender: { userName: user }, content: message });
+            // Ensure 'user' is always treated as a string
+            let senderName = (typeof user === "object" && user.userName) ? user.userName : String(user);
+
+            $scope.messages.push({ sender: { userName: senderName }, content: message });
         });
     });
+
 });

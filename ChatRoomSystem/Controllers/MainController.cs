@@ -5,16 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ChatRoomSystem.Data;
 using ChatRoomSystem.Models;
 
 namespace ChatRoomSystem.Controllers
 {
     public class MainController : Controller
     {
-        private readonly MyProjectContext _context;
+        private readonly ChatDbContext _context;
 
-        public MainController(MyProjectContext context)
+        public MainController(ChatDbContext context)
         {
             _context = context;
         }

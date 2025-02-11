@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ChatRoomSystem.Data;
-using ChatRoomSystem.Hubs; // Add this
+using ChatRoomSystem.Hubs;
+using ChatRoomSystem.Models; 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure Entity Framework Core
-builder.Services.AddDbContext<MyProjectContext>(options =>
+builder.Services.AddDbContext<ChatDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection")));
 
 // Register SignalR service
