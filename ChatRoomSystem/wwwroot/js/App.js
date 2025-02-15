@@ -74,7 +74,6 @@ app.controller('LoginController', function ($scope, $http, $cookies, $location, 
             }),
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).then(function (response) {
-            console.log("Login API Response:", response.data); 
 
             if (response.data.success) {
                 var userInfo = {
@@ -83,11 +82,7 @@ app.controller('LoginController', function ($scope, $http, $cookies, $location, 
                     Name: response.data.name     
                 };
 
-                if (!userInfo.Id || !userInfo.Username || !userInfo.Name) {
-                    console.error("Invalid user data received:", userInfo);
-                    alert("Login failed. Please try again.");
-                    return;
-                }
+
 
                 // Store user in cookies (expires in 7 days)
                 var expireDate = new Date();
