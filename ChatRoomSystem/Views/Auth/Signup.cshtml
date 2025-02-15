@@ -1,0 +1,80 @@
+﻿<section class="vh-100 gradient-custom d-flex justify-content-center align-items-center">
+    <div class="container py-5" style="max-width: 90%; margin: auto;">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8 col-xl-6">
+                <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+                    <div class="card-body p-4 p-md-5">
+                        <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 text-center">Sign Up</h3>
+                        <form name="signupForm" ng-submit="submit(user)">
+
+                            <!-- Username and Name -->
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label" for="username">Username</label>
+                                    <input type="text" id="username" class="form-control form-control-lg"
+                                           placeholder="Enter Username" ng-model="user.UserName" required />
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label" for="name">Full Name</label>
+                                    <input type="text" id="name" class="form-control form-control-lg"
+                                           placeholder="Enter Full Name" ng-model="user.Name" required />
+                                </div>
+                            </div>
+
+                            <!-- Email and Password -->
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label" for="email">Email</label>
+                                    <input type="email" id="email" class="form-control form-control-lg"
+                                           placeholder="example@email.com" ng-model="user.Email" required />
+                                </div>
+                                <div class="col-md-6 mb-4 position-relative">
+                                    <label class="form-label" for="password">Password</label>
+                                    <div class="input-group">
+                                        <input type="password" id="password" class="form-control form-control-lg"
+                                               placeholder="Enter Password" ng-model="user.Password" required />
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="mt-4 pt-2 text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    Create Account
+                                </button>
+                            </div>
+
+                            <!-- Login Redirect -->
+                            <div class="text-center mt-3">
+                                <p>
+                                    Already have an account? <a ng-href="#/login" class="text-primary">Login</a>
+                                </p>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .form-control {
+        border-radius: 0.25rem;
+    }
+
+    .input-group-text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.375rem 0.75rem;
+        border: none;
+    }
+
+    .btn-primary {
+        background-color: #007bff !important;
+        border: none;
+    }
+</style>

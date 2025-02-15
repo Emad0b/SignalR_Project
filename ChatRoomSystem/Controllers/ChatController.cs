@@ -6,8 +6,6 @@ using ChatRoomSystem.Models;
 
 namespace ChatRoomSystem.Controllers
 {
-    //    [Route("api/chat")]
-    //    [ApiController]
     public class ChatController : ControllerBase
     {
         private readonly ChatDbContext _context;
@@ -17,30 +15,31 @@ namespace ChatRoomSystem.Controllers
             _context = context;
         }
 
-        // Retrieve all chat messages
         [HttpGet]
         public JsonResult GetMessages()
         {
             var messages = _context.Messages
                 .Include(m => m.Sender)
-                .OrderBy(m => m.Timestamp)
+                .OrderByDescending(m => m.Timestamp)
                 .Select(m => new
                 {
-                    Id = m.Id,
-                    Content = m.Content,
-                    Timestamp = m.Timestamp,
-                    Sender = m.Sender.UserName
+                    id = m.Id,  
+                    content = m.Content, 
+                    timestamp = m.Timestamp,
+                    senderId = m.Sender.Id,
+                    senderName = m.Sender.UserName
                 })
                 .ToList();
 
             return new JsonResult(new { success = true, data = messages });
         }
 
-        // Save a new message
+
+
         [HttpPost]
-        public JsonResult SendMessage([FromBody] MessageDto obj)
+        public JsonResult SendMessage(Guid senderId, string content)
         {
-            var sender =  _context.Users.FirstOrDefault(u => u.Id == obj.SenderId);
+            var sender = _context.Users.FirstOrDefault(u => u.Id == senderId);
             if (sender == null)
             {
                 return new JsonResult(new { success = false, message = "User not found" });
@@ -48,21 +47,17 @@ namespace ChatRoomSystem.Controllers
 
             var msg = new Message
             {
-                Content = obj.Content,
+                Content = content,
                 SenderId = sender.Id,
                 Timestamp = DateTime.Now
             };
 
             _context.Messages.Add(msg);
-             _context.SaveChangesAsync();
+            _context.SaveChanges();
 
             return new JsonResult(new { success = true, message = "Message saved successfully" });
         }
+
     }
 
-    public class MessageDto
-    {
-        public string Content { get; set; }
-        public Guid SenderId { get; set; }
-    }
 }

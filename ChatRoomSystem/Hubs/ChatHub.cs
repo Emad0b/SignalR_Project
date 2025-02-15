@@ -23,19 +23,20 @@ namespace ChatRoomSystem.Hubs
                 return new JsonResult(new { success = false, message = "User not found" });
             }
 
-            var msg = new Message
-            {
-                Content = message,
-                SenderId = sender.Id,
-                Timestamp = DateTime.Now
-            };
+            string name = sender.UserName; 
+           
+            //var msg = new Message
+            //{
+            //    Content = message,
+            //    SenderId = sender.Id,
+            //    Timestamp = DateTime.Now
+            //};
 
-            _context.Messages.Add(msg);
-            await _context.SaveChangesAsync(); // Ensure the message is saved before sending it
+            //_context.Messages.Add(msg);
+            //await _context.SaveChangesAsync(); 
 
-            string name = sender.UserName; // Ensure it's a string
 
-            await Clients.All.SendAsync("ReceiveMessage", name, message); // Ensure we send a string
+            await Clients.All.SendAsync("ReceiveMessage",sender.Id, name, message);
 
             return new JsonResult(new { success = true, message = "Message sent successfully" });
         }
